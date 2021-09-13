@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Contracts;
 using Entities;
+using Webapi.Models;
 
 namespace Webapi.Controllers
 {
@@ -35,28 +36,34 @@ namespace Webapi.Controllers
 
         // POST api/<AuthorsController>
         [HttpPost]
-        public async Task Post([FromBody] Author Author)
+        public async Task Post([FromBody] AuthorCreationModel authorCreationModel)
         {
             if (!ModelState.IsValid)
             {
                 throw new Exception();
             }
 
-            await this.business.InsertAsync(Author);
+            var author = new Author()
+            {
+                Id = authorCreationModel.Id,
+                Name = authorCreationModel.Name
+            };
+
+            await this.business.InsertAsync(author);
         }
 
         // PUT api/<AuthorsController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Author Author)
+        public async Task Put(int id, [FromBody] Author author)
         {
             if (!ModelState.IsValid)
             {
                 throw new Exception();
             }
 
-            Author.Id = id;
+            author.Id = id;
 
-            await this.business.UpdateAsync(Author);
+            await this.business.UpdateAsync(author);
         }
 
         // DELETE api/<AuthorsController>/5

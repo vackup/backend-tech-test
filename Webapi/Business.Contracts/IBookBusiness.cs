@@ -13,12 +13,14 @@ namespace Business.Contracts
 
         Task<Book> GetFirstOrDefaultAsync();
 
-        Task InsertAsync(Book entity);
+        Task InsertAsync(Book book);
 
-        Task UpdateAsync(Book entity);
+        Task UpdateAsync(Book book);
 
         Task DeleteAsync(int id);
 
-        Task DeleteAsync(Book entity);
+        Task DeleteAsync(Book book);
+
+        Task SellBookAsync(int id);
     }
 }

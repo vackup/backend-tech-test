@@ -9,5 +9,7 @@ namespace Entities
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
+
+        public int SalesCount { get; set; }
     }
 }

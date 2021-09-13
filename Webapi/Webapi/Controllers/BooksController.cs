@@ -22,9 +22,26 @@ namespace Webapi.Controllers
 
         // GET: api/<BooksController>
         [HttpGet]
-        public async Task<IEnumerable<Book>> Get()
+        public async Task<IEnumerable<BookResponseModel>> Get()
         {
-            return await this.business.GetAllAsync();
+            var books = (await this.business.GetAllAsync()).ToList();
+
+            return !books.Any() ? new List<BookResponseModel>() : books.Select(this.ToBookResponseModel);
+        }
+
+        private BookResponseModel ToBookResponseModel(Book book)
+        {
+            return new BookResponseModel
+            {
+                Id = book.Id,
+                SalesCount = book.SalesCount,
+                Title = book.Title,
+                Author = new AuthorResponseModel
+                {
+                    Id = book.Author.Id,
+                    Name = book.Author.Name,
+                }
+            };
         }
 
         // GET api/<BooksController>/5
@@ -36,28 +53,28 @@ namespace Webapi.Controllers
 
         // POST api/<BooksController>
         [HttpPost]
-        public async Task Post([FromBody] BookModel book)
+        public async Task Post([FromBody] BookCreationModel bookCreation)
         {
             if (!ModelState.IsValid)
             {
                 throw new Exception();
             }
 
-            await this.business.InsertAsync(GetEntity(book));
+            await this.business.InsertAsync(GetEntity(bookCreation));
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] BookModel book)
+        public async Task Put(int id, [FromBody] BookCreationModel bookCreation)
         {
             if (!ModelState.IsValid)
             {
                 throw new Exception();
             }
 
-            book.Id = id;
+            bookCreation.Id = id;
 
-            await this.business.UpdateAsync(GetEntity(book));
+            await this.business.UpdateAsync(GetEntity(bookCreation));
         }
 
         // DELETE api/<BooksController>/5
@@ -67,13 +84,13 @@ namespace Webapi.Controllers
             await this.business.DeleteAsync(id);
         }
 
-        private Book GetEntity(BookModel book)
+        private Book GetEntity(BookCreationModel bookCreation)
         {
             return new Book
             {
-                Id = book.Id,
-                Author = new Author { Id = book.AuthorId },
-                Title = book.Title
+                Id = bookCreation.Id,
+                Author = new Author { Id = bookCreation.AuthorId },
+                Title = bookCreation.Title
             };
         }
     }
