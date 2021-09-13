@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Contracts;
 using Entities;
-using Webapi.DTOs;
+using Webapi.Models;
 
 namespace Webapi.Controllers
 {
@@ -36,7 +36,7 @@ namespace Webapi.Controllers
 
         // POST api/<BooksController>
         [HttpPost]
-        public async Task Post([FromBody] BookDTO book)
+        public async Task Post([FromBody] BookModel book)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +48,7 @@ namespace Webapi.Controllers
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] BookDTO book)
+        public async Task Put(int id, [FromBody] BookModel book)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace Webapi.Controllers
             await this.business.DeleteAsync(id);
         }
 
-        private Book GetEntity(BookDTO book)
+        private Book GetEntity(BookModel book)
         {
             return new Book
             {

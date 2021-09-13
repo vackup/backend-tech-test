@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Webapi.DTOs
+namespace Webapi.Models
 {
-    public class BookDTO
+    public class BookModel
     {
         public int Id { get; set; }
         public int AuthorId { get; set; }
