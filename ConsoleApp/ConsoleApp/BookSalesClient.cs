@@ -9,7 +9,7 @@ namespace ConsoleApp
     public class BookSalesClient
     {
         readonly HttpClient client;
-
+        
         public BookSalesClient(HttpClient client)
         {
             this.client = client;
@@ -17,8 +17,6 @@ namespace ConsoleApp
 
         public async Task SaleBookAsync(BookSaleModel bookSaleModel)
         {
-            var aaa = await this.client.GetAsync("api/Books");
-
             HttpResponseMessage response = await this.client.PostAsJsonAsync("api/BooksSales", bookSaleModel);
             response.EnsureSuccessStatusCode();
         }

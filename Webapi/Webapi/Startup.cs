@@ -40,6 +40,17 @@ namespace Webapi
             services.AddControllers();
 
             AddSwagger(services);
+
+            AddCors(services);
+        }
+
+        private static void AddCors(IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                //ToDo: Add production CORS policy
+                options.AddPolicy("development", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+            });
         }
 
         private static void AddBusiness(IServiceCollection services)
@@ -67,6 +78,8 @@ namespace Webapi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("development");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
